@@ -19,7 +19,7 @@
                              <div class="card-body">
                                <div class="row no-gutters align-items-center">
                                  <div class="col mr-2">
-                                   <div class="h5 mb-0 font-weight-bold text-primary text-uppercase mb-1">Total Penjualan Tahun <?php echo $tahun->tahun; ?></div>
+                                   <div class="h5 mb-0 font-weight-bold text-primary text-uppercase mb-1">Total Permohonan Tahun <?php echo $tahunn; ?></div>
                                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $totalthn; ?></div>
                                  </div>
                                  <div class="col-auto">
@@ -36,7 +36,7 @@
                                        <div class="card-body">
                                          <div class="row no-gutters align-items-center">
                                            <div class="col mr-2">
-                                             <div class="h5 mb-0 font-weight-bold text-primary text-uppercase mb-1">Total Penjualan Keseluruhan</div>
+                                             <div class="h5 mb-0 font-weight-bold text-primary text-uppercase mb-1">Total Permohonan Keseluruhan</div>
                                              <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $total; ?></div>
                                            </div>
                                            <div class="col-auto">
@@ -62,11 +62,11 @@
     data: {
       labels: ["Januari", "Februari", "Maret", "April", "Mei", "Juni","Juli", "Agustus", "September", "Oktober", "November", "Desember"],
       datasets: [{
-        label: 'Penjualan Tahun <?php echo $tahun->tahun; ?>',
-        data: [<?php echo $penjualan[0]; ?>, <?php echo $penjualan[1]; ?>, <?php echo $penjualan[2]; ?>,
-        <?php echo $penjualan[3]; ?>, <?php echo $penjualan[4]; ?>, <?php echo $penjualan[5]; ?>,
-        <?php echo $penjualan[6]; ?>, <?php echo $penjualan[7]; ?>, <?php echo $penjualan[8]; ?>,
-        <?php echo $penjualan[9]; ?>, <?php echo $penjualan[10]; ?>, <?php echo $penjualan[11]; ?>],
+        label: 'Permohonan Tahun <?php echo $tahunn; ?>',
+        data: [<?php echo $permohonan[0]; ?>, <?php echo $permohonan[1]; ?>, <?php echo $permohonan[2]; ?>,
+        <?php echo $permohonan[3]; ?>, <?php echo $permohonan[4]; ?>, <?php echo $permohonan[5]; ?>,
+        <?php echo $permohonan[6]; ?>, <?php echo $permohonan[7]; ?>, <?php echo $permohonan[8]; ?>,
+        <?php echo $permohonan[9]; ?>, <?php echo $permohonan[10]; ?>, <?php echo $permohonan[11]; ?>],
         backgroundColor: [
         'rgba(255, 99, 132, 0.2)',
         'rgba(54, 162, 235, 0.2)',

@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     @include('templates.head')
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <link href="{{ url('/assets/plugins/datatables/dataTables.bootstrap4.css') }}" rel="stylesheet">
     <link href="{{ url('/assets/css/sb-admin.css') }}" rel="stylesheet">
     <script type="text/javascript" src="{{ url('/assets/js/Chart.js') }}"></script>
@@ -28,8 +29,8 @@
                     Halo, {{ session('login')['nama'] }}
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                    <a class="dropdown-item" href="{{ url('/admin/settings') }}">Settings</a>
-                    <div class="dropdown-divider"></div>
+                    <!-- <a class="dropdown-item" href="{{ url('/admin/settings') }}">Settings</a> -->
+                    <!-- <div class="dropdown-divider"></div> -->
                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
                 </div>
             </li>
@@ -61,16 +62,18 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="pelanggan-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                     <i class="fa fa-users"></i>
-                    <span>Pemohon</span>
+                    <span>Permohonan</span>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="pelanggan-dropdown">
-                    <a class="dropdown-item" href="{{ url('/admin/datapelanggan') }}">Data Pemohon</a>
-                    <a class="dropdown-item" href="{{ url('/admin/datatopup') }}">Tambah Pemohon</a>
+                    <a class="dropdown-item" href="{{ url('/admin/datapermohonan') }}">Data Permohonan</a>
+                    @if(session('login')['level'] === 7)
+                    <a class="dropdown-item" href="{{ url('/admin/tambahpermohonan') }}">Tambah Permohonan</a>
+                    @endif
                 </div>
 
 
             </li>
-            <li class="nav-item dropdown">
+            <!-- <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="admin-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                     <i class="fa fa-table"></i>
                     <span>Produk</span>
@@ -78,18 +81,18 @@
                 <div class="dropdown-menu" aria-labelledby="admin-dropdown">
                     <a class="dropdown-item" href="{{ url('/admin/kategori/add') }}">Tambah Kategori</a>
                     <a class="dropdown-item" href="{{ url('/admin/kemasan/add') }}">Tambah Kemasan</a>
-                    <!-- <a class="dropdown-item" href="{{ url('/admin/produk/add') }}">Tambah Produk</a> -->
+                     <a class="dropdown-item" href="{{ url('/admin/produk/add') }}">Tambah Produk</a> 
                     <a class="dropdown-item" href="{{ url('/admin/kategori') }}">Data Kategori</a>
                     <a class="dropdown-item" href="{{ url('/admin/kemasan') }}">Data Kemasan</a>
                     <a class="dropdown-item" href="{{ url('/admin/produk') }}">Data Produk</a>
                 </div>
-            </li>
-            <li class="nav-item">
+            </li> -->
+          <!--   <li class="nav-item">
                 <a class="nav-link" href="{{ url('/admin/pesanan') }}">
                     <i class="fas fa-shopping-cart"></i>
                     <span>Data Penjualan</span>
                 </a>
-            </li>
+            </li> -->
             <!-- <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="admin-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" onclick="event.preventDefault(); alert('Belum'.toLocaleUpperCase());">
                     <i class="fa fa-table"></i>
@@ -127,7 +130,7 @@
             <footer class="sticky-footer">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright © FASILKOM UNIVERSITAS JEMBER 2020</span>
+                        <span>Copyright © FASILKOM UNIVERSITAS JEMBER 2021</span>
                     </div>
                 </div>
             </footer>

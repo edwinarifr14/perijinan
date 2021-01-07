@@ -28,7 +28,13 @@ Route::middleware('checksuper')->group(function() {
 
 // admin route
 Route::middleware('checkadmin')->group(function() {
+
     // process routes
+    Route::put('/admin/permohonan/{id}', 'AdminController@permohonanupdate');
+    Route::delete('/admin/permohonan/{id}', 'AdminController@permohonandelete');
+    Route::post('/admin/addPermohonan', 'AdminController@addPermohonan');
+    Route::post('/admin/addPermohonan2', 'AdminController@addPermohonan2');
+
     Route::put('/admin/{id}', 'AdminController@update');
 
     Route::get('/kategori/data', 'KategoriController@datatables');
@@ -47,10 +53,10 @@ Route::middleware('checkadmin')->group(function() {
     Route::delete('/produk/{id}', 'ProdukController@delete');
 
     Route::get('/admin/pelanggan/topup', 'TransaksiController@datatablesTopUp');
-    Route::get('/admin/pelanggan/data', 'AdminController@datatablesPelanggan');
+    Route::get('/admin/permohonan/data', 'AdminController@datatablesPermohonan');
     Route::get('/admin/pesanan/data', 'AdminController@datatablesPesanan');
-    Route::get('/admin/datapelanggan','AdminController@listPelanggan');
-    Route::get('/admin/datatopup','AdminController@listTopUp');
+    Route::get('/admin/datapermohonan','AdminController@listPermohonan');
+    Route::get('/admin/tambahpermohonan','AdminController@tambahPermohonan');
     Route::get('/admin/saldo/{id}','AdminController@konfTopUp');
     Route::put('/admin/conf/{id}','TransaksiController@updateTopUp');
 

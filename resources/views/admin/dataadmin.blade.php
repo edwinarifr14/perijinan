@@ -64,8 +64,13 @@
                         <label for="level" class="col-form-label">Level:</label>
                         <select id="level" name="level" class="custom-select d-block w-100" required>
                             <option disabled>--Pilih Level Admin--</option>
-                            <option value="1">Super Admin</option>
-                            <option value="2">Admin</option>
+                                <option value="1">Super Admin</option>
+                                <option value="2">Admin Kabid</option>
+                                <option value="3">Admin Kasi Usaha</option>
+                                <option value="4">Admin Non Usaha</option>
+                                <option value="5">Admin Aris</option>
+                                <option value="6">Admin Rifki</option>
+                                <option value="7">Admin CS</option>
                         </select>
                     </div>
                     <p class="text-danger">{{ $errors->first('level') }}</p>
