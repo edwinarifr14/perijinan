@@ -152,7 +152,11 @@
                     <div class="form-group">
                         <label for="alamat" class="col-form-label">Proses:</label>
                           <div class="col-md-14 form-inline">
+                          @if(session('login')['level'] === 1 ||session('login')['level'] === 7)
+                          <select disabled class="form-control col-md-12" name="proses" id="proses">
+                          @else
                           <select class="form-control col-md-12" name="proses" id="proses">
+                          @endif
                           <option value="Sedang Dalam Proses">Sedang Dalam Proses</option>
                                 <option value="Selesai">Selesai</option>
                           </select>

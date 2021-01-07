@@ -85,7 +85,11 @@
                     <div class="form-group">
                         <label for="alamat" class="col-form-label">Peninjauan Lapangan:</label>
                           <div class="col-md-14 form-inline">
+                          @if(session('login')['level'] === 1 ||session('login')['level'] === 7)
                           <select class="form-control col-md-12" name="status_peninjauan" id="status_peninjauan">
+                          @else
+                          <select disabled class="form-control col-md-12" name="status_peninjauan" id="status_peninjauan">
+                          @endif
                           <option value="Ya">Ya</option>
                                 <option value="Tidak">Tidak</option>
                           </select>
@@ -100,7 +104,11 @@
                     <div class="form-group">
                         <label for="alamat" class="col-form-label">Status:</label>
                           <div class="col-md-14 form-inline">
+                          @if(session('login')['level'] === 1 ||session('login')['level'] === 7)
                           <select class="form-control col-md-12" name="status" id="status">
+                          @else
+                          <select disabled class="form-control col-md-12" name="status" id="status">
+                          @endif
                           <option value="Diterima">Diterima</option>
                                 <option value="Dikembalikan">Dikembalikan</option>
                           </select>
@@ -116,7 +124,7 @@
                         <label for="alamat" class="col-form-label">Diteruskan:</label>
                           <div class="col-md-14 form-inline">
                           @if(session('login')['level'] === 1 ||session('login')['level'] === 7)
-                          <select disabled class="form-control col-md-12" name="diteruskan" id="diteruskan">
+                          <select class="form-control col-md-12" name="diteruskan" id="diteruskan">
                           <option value="-">-</option>
                           <option value="Kabid">Kabid</option>
                             <option value="Kasi Usaha">Kasi Usaha</option>
@@ -126,7 +134,7 @@
                             <option value="Selesai">Selesai</option>
                           </select>
                           @else
-                          <select class="form-control col-md-12" name="diteruskan" id="diteruskan">
+                          <select disabled class="form-control col-md-12" name="diteruskan" id="diteruskan">
                           <option value="-">-</option>
                           <option value="Kabid">Kabid</option>
                             <option value="Kasi Usaha">Kasi Usaha</option>
@@ -144,6 +152,26 @@
                           <div class="form-group">
                     </div>
                     <p class="text-danger">{{ $errors->first('diteruskan') }}</p>
+                    <div class="form-group">
+                        <label for="alamat" class="col-form-label">Proses:</label>
+                          <div class="col-md-14 form-inline">
+                          @if(session('login')['level'] === 1 ||session('login')['level'] === 7)
+                          <select disabled class="form-control col-md-12" name="proses" id="proses">
+                          @else
+                          <select class="form-control col-md-12" name="proses" id="proses">
+                          @endif
+                          <option value="Sedang Dalam Proses">Sedang Dalam Proses</option>
+                                <option value="Aris">Aris</option>
+                                <option value="Rifki">Rifki</option>
+                          </select>
+                          
+                          <!-- </div>
+                          <div class="col-md-12 form-group"> -->
+                          </div>
+                          
+                          </div>
+                          <div class="form-group">
+                    </div>
                     <div class="form-group">
                         <label for="nama" class="col-form-label">Waktu:</label>
                         <input disabled type="text" class="form-control" id="waktu" name="waktu">
