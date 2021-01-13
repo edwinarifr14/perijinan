@@ -22,11 +22,13 @@
             <table class="table table-bordered" id="data-pelanggan" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>No</th>
+                    <th>No</th>
                         <th>Pemohon</th>
                         <th>NIK</th>
                         <th>Jenis</th>
-                        <th>Waktu</th>
+                        <th>Waktu Masuk</th>
+                        <th>Waktu Selesai</th>
+                        <th>Keterangan</th>
                         <th>Proses</th>
                         <th>Aksi</th>
                     </tr>
@@ -170,7 +172,11 @@
                     </div>
                     <p class="text-danger">{{ $errors->first('diteruskan') }}</p>
                     <div class="form-group">
-                        <label for="nama" class="col-form-label">Waktu:</label>
+                        <label for="nama" class="col-form-label">Waktu Masuk:</label>
+                        <input disabled type="text" class="form-control" id="masuk" name="masuk">
+                    </div>
+                    <div class="form-group">
+                        <label for="nama" class="col-form-label">Waktu Selesai:</label>
                         <input disabled type="text" class="form-control" id="waktu" name="waktu">
                     </div>
                     
@@ -218,7 +224,9 @@ $(document).ready(function() {
             { 'data': 'permohonan_pemohon' },
             { 'data': 'permohonan_NIK' },
             { 'data': 'permohonan_jenis' },
+            { 'data': 'permohonan_masuk' },
             { 'data': 'permohonan_waktu' },
+            { 'data': 'permohonan_status' },
             { 'data': 'permohonan_diteruskan' },
             { 'data': 'action' },
         ]

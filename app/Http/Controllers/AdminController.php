@@ -184,6 +184,12 @@ class AdminController extends Controller
 
     public function datatablesPermohonan() {
         return Datatables::of(Permohonan::all())
+            ->editColumn('permohonan_waktu', function ($user){
+                return date('d-m-Y H:i', strtotime($user->permohonan_waktu));
+            })
+            ->editColumn('permohonan_masuk', function ($user){
+                return date('d-m-Y H:i', strtotime($user->permohonan_waktu));
+            })
             ->addColumn('action', function($data) {
                 return '
                     <button
@@ -350,6 +356,16 @@ class AdminController extends Controller
 
       public function addPermohonan2(Request $req) {
         $tes=Admin::find($req->session()->get('login')['id']);
+        /* $messages = [
+        'alpha' => 'Tabel :attribute wajib diisi'
+    ];
+
+        
+            $this->validate($req,[
+                'diteruskan1' => 'alpha',
+                ],$messages); */
+        
+          
 
             /* $data1 = trim($req->pemohon);
             $data2 = trim($req->alamat);
@@ -368,16 +384,21 @@ class AdminController extends Controller
               $admin->permohonan_jenis = trim($req->jenis);
               $admin->permohonan_status_peninjauan = trim($req->peninjauan);
               $admin->permohonan_status = trim($req->status);
+
               if($req->diteruskan1){
                 $admin->permohonan_diteruskan = trim($req->diteruskan1);
                 if($req->status == 'Dikembalikan'){
-                    $admin->permohonan_diteruskan = '-';
-                }
+                    $admin->permohonan_diteruskan = 'Belum Diteruskan';
+                }/* elseif($req->diteruskan1 == '-' && $req->status == 'Diterima'){
+                    $admin->permohonan_diteruskan = 'Aris';
+                } */
               }else{
                 $admin->permohonan_diteruskan = trim($req->diteruskan2);
                 if($req->status == 'Dikembalikan'){
-                    $admin->permohonan_diteruskan = '-';
-                }
+                    $admin->permohonan_diteruskan = 'Belum Diteruskan';
+                }/* elseif($req->diteruskan2 == '-' && $req->status == 'Diterima'){
+                    $admin->permohonan_diteruskan = 'Aris';
+                } */
               }
               
               $admin->save();

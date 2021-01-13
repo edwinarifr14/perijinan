@@ -34,13 +34,13 @@
                         <label for="level">Diteruskan</label>
                         <div class="input-group">
                             <select class="form-control" name="diteruskan1" id="diteruskan1">
-                            <option value="-">-</option>
+                            <option value="Belum Diteruskan">-</option>
                             <option value="Kabid">Kabid</option>
                             <option value="Kasi Usaha">Kasi Usaha</option>
                             <option value="Non Usaha">Non Usaha</option>
                             </select>
                         </div>
-                        <p class="text-danger">{{ $errors->first('level') }}</p>
+                        <p class="text-danger">{{ $errors->first('diteruskan1') }}</p>
                     </div>
                 </div>
                 @else
@@ -49,12 +49,12 @@
                         <label for="level">Diteruskan</label>
                         <div class="input-group">
                             <select class="form-control" name="diteruskan2" id="diteruskan2">
-                            <option value="-">-</option>
+                            <option value="Belum Diteruskan">-</option>
                             <option value="Aris">Aris</option>
                             <option value="Rifki">Rifki</option>
                             </select>
                         </div>
-                        <p class="text-danger">{{ $errors->first('level') }}</p>
+                        <p class="text-danger">{{ $errors->first('diteruskan2') }}</p>
                     </div>
                 </div>
                 @endif

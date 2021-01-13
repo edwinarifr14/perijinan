@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+use Carbon\Carbon;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -8,6 +9,8 @@ class Permohonan extends Model
 {
     protected $table = 'permohonan', $primaryKey = 'permohonan_id';
     public $timestamps = false;
+
+    
 
     public static function getAll() {
         return self::select([
@@ -22,7 +25,8 @@ class Permohonan extends Model
             'permohonan_status',
             'permohonan_diteruskan',
             'permohonan_waktu',
-            'permohonan_proses'
+            'permohonan_masuk'
         ]);
     }
+    
 }

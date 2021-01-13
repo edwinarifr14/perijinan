@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 07 Jan 2021 pada 16.14
+-- Waktu pembuatan: 13 Jan 2021 pada 15.39
 -- Versi server: 10.1.38-MariaDB
 -- Versi PHP: 7.3.2
 
@@ -742,19 +742,23 @@ CREATE TABLE `permohonan` (
   `permohonan_jenis` varchar(100) NOT NULL,
   `permohonan_status_peninjauan` enum('Ya','Tidak') NOT NULL DEFAULT 'Tidak',
   `permohonan_status` enum('Diterima','Dikembalikan') NOT NULL DEFAULT 'Diterima',
-  `permohonan_diteruskan` enum('Kabid','Kasi Usaha','Non Usaha','Aris','Rifki','-','Selesai') NOT NULL DEFAULT 'Kabid',
-  `permohonan_waktu` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `permohonan_diteruskan` enum('Kabid','Kasi Usaha','Non Usaha','Aris','Rifki','Belum Diteruskan','Selesai') NOT NULL DEFAULT 'Kabid',
+  `permohonan_waktu` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `permohonan_masuk` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `permohonan`
 --
 
-INSERT INTO `permohonan` (`permohonan_id`, `permohonan_penerima`, `permohonan_pemohon`, `permohonan_alamat`, `permohonan_NIK`, `permohonan_no_hp`, `permohonan_jenis`, `permohonan_status_peninjauan`, `permohonan_status`, `permohonan_diteruskan`, `permohonan_waktu`) VALUES
-(1, 'tes', 'asd', 'asd', '1234123412341234', '123412341234', 'SIP', 'Ya', 'Diterima', 'Selesai', '2021-01-07 21:24:48'),
-(2, 'tes', 'Mudahri', 'curahtangi', '1234123412341234', '085204971183', 'SIP', 'Ya', 'Diterima', 'Selesai', '2021-01-07 00:52:29'),
-(4, 'CS', 'asdasdsd', 'asdasasd', '1234123412341234', '123412341234', 'gfhgh', 'Tidak', 'Diterima', 'Rifki', '2021-01-07 21:34:12'),
-(5, 'CS', 'asd221312', 'asddfdf', '1234123412341234', '123412341234', 'nnh', 'Ya', 'Diterima', 'Aris', '2021-01-07 22:13:22');
+INSERT INTO `permohonan` (`permohonan_id`, `permohonan_penerima`, `permohonan_pemohon`, `permohonan_alamat`, `permohonan_NIK`, `permohonan_no_hp`, `permohonan_jenis`, `permohonan_status_peninjauan`, `permohonan_status`, `permohonan_diteruskan`, `permohonan_waktu`, `permohonan_masuk`) VALUES
+(1, 'tes', 'ahmad muhammad zainal mustafa', 'asd', '1234123412341234', '123412341234', 'SIP', 'Ya', 'Diterima', 'Selesai', '2021-01-07 21:24:48', '2021-01-12 11:26:21'),
+(2, 'tes', 'Mudahri', 'curahtangi', '1234123412341234', '085204971183', 'SIP', 'Ya', 'Diterima', 'Selesai', '2021-01-07 00:52:29', '2021-01-12 11:26:21'),
+(4, 'CS', 'asdasdsd', 'asdasasd', '1234123412341234', '123412341234', 'gfhgh', 'Tidak', 'Diterima', 'Rifki', '2021-01-07 21:34:12', '2021-01-12 11:26:21'),
+(5, 'CS', 'asd221312', 'asddfdf', '1234123412341234', '123412341234', 'nnh', 'Ya', 'Diterima', 'Aris', '2021-01-07 22:13:22', '2021-01-12 11:26:21'),
+(11, 'CS', 'asdasd', 'dfgdfg', '1234123412341234', '123343243214', 'sdf', 'Ya', 'Diterima', 'Selesai', '2021-01-12 11:34:35', '2021-01-12 11:26:21'),
+(13, 'CS', 'dfgdfg', 'dfgdfg', '1234123423423411', '444444444444', 'sdaasd', 'Ya', 'Diterima', 'Belum Diteruskan', '2021-01-12 11:05:38', '2021-01-12 11:26:21'),
+(14, 'CS', 'jhjj', 'tyuyt', '7777777777777777', '777777777777', 'fh', 'Ya', 'Diterima', 'Kabid', '2021-01-12 11:18:08', '2021-01-12 11:26:21');
 
 -- --------------------------------------------------------
 
@@ -1047,7 +1051,7 @@ ALTER TABLE `pengunjung`
 -- AUTO_INCREMENT untuk tabel `permohonan`
 --
 ALTER TABLE `permohonan`
-  MODIFY `permohonan_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `permohonan_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT untuk tabel `pesanan`
