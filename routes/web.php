@@ -61,7 +61,9 @@ Route::middleware('checkadmin')->group(function() {
     Route::put('/admin/conf/{id}','TransaksiController@updateTopUp');
 
     // page routes
-    Route::get('/admin/pesanan', 'PesananController@listPage');
+    Route::post('/admin/laporanPage', 'AdminController@laporanPage');
+    Route::get('/admin/laporan', 'AdminController@laporan');
+    Route::post('/admin/laporan/laporan_cetak', 'AdminController@laporan_cetak');
     Route::get('/admin', 'AdminController@index');
     Route::get('/admin/settings', 'AdminController@settings');
     Route::get('/admin/kategori/add', 'KategoriController@addPage');

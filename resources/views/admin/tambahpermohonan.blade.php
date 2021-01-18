@@ -80,6 +80,18 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col-12 col-sm-12 col-md-12 col-lg-6 col-xl-5">
+                        <label for="level">Status</label>
+                        <div class="input-group">
+                            <select class="form-control" name="status" id="status">
+                                <option value="Diterima">Diterima</option>
+                                <option value="Dikembalikan">Dikembalikan</option>
+                            </select>
+                        </div>
+                        <p class="text-danger">{{ $errors->first('level') }}</p>
+                    </div>
+                </div>
+                <!-- <div class="form-row">
+                    <div class="form-group col-12 col-sm-12 col-md-12 col-lg-6 col-xl-5">
                         <label for="level">Peninjauan Lapangan</label>
                         <div class="input-group">
                             <select class="form-control dynamic" name="peninjauan" id="peninjauan" data-dependent="diteruskan">
@@ -89,7 +101,7 @@
                         </div>
                         <p class="text-danger">{{ $errors->first('peninjauan') }}</p>
                     </div>
-                </div>
+                </div> -->
                 <!-- <div class="form-row">
                     <div class="form-group col-12 col-sm-12 col-md-12 col-lg-6 col-xl-5">
                         <label for="level">Jenis Permohonan</label>
@@ -146,7 +158,7 @@
             <div class="card-footer">
                 <button class="btn btn-primary">
                     <i class="fas fa-angle-double-right"></i>
-                    <span>Selanjutnya</span>
+                    <span>Simpan</span>
                 </button>
                 <button type="reset" class="btn btn-danger">
                     <i class="fas fa-trash"></i>

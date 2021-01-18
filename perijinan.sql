@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 13 Jan 2021 pada 15.39
+-- Waktu pembuatan: 18 Jan 2021 pada 16.35
 -- Versi server: 10.1.38-MariaDB
 -- Versi PHP: 7.3.2
 
@@ -44,11 +44,8 @@ CREATE TABLE `admin` (
 INSERT INTO `admin` (`admin_id`, `admin_username`, `admin_nama`, `admin_password`, `admin_kontak`, `admin_level`) VALUES
 (1, 'admin', 'Super Admin', '$2y$10$9okWb.4sem2tCZU5ih4ATuShDdkwPodqoy4gdn8FLogecB9WOGM1C', '081271377018', 1),
 (2, 'kabid', 'Kabid', '$2y$10$FmRRf2J0.2pRhfYfpvqQruhnIfaMUcOYQvAcUmxy0T8eFX/z8ny8i', '', 2),
-(3, 'cs', 'CS', '$2y$10$gZpdflUGmPZEmvHJa9dpc.3KD70sRBW.VCWIuloMOHadJrl4B3.66', '', 7),
-(4, 'kasiusaha', 'Kasi Usaha', '$2y$10$L8O31iLUKnau1eWVV3ZBtehGEPknNgxFVn0esIxCQy3LfeDR50mmu', '', 3),
-(5, 'nonusaha', 'Non Usaha', '$2y$10$EyWeB4otvrXfNVszYyWvGebDNZHuiO/7/.12nXZUWGYIqDvFmAut2', '', 4),
-(6, 'aris', 'Aris', '$2y$10$VotlbMQTvzUZj8NL2Lz6Kex8kqFylmI.6dwWW/qxr/T0/PbQitd1W', '', 5),
-(7, 'rifki', 'Rifki', '$2y$10$O6uAkMNOLxsKjdkNJHNQXu70lIZyVc5/dSNTTUdnFLo3tnasZiRVS', '', 6);
+(3, 'cs', 'CS', '$2y$10$gZpdflUGmPZEmvHJa9dpc.3KD70sRBW.VCWIuloMOHadJrl4B3.66', '', 3),
+(8, 'operator', 'Operator', '$2y$10$GwJCi7V5zxTaMTYT8BrjreT494F127O42M5zHgdArgzPoLA/fsAeG', '', 4);
 
 -- --------------------------------------------------------
 
@@ -740,25 +737,27 @@ CREATE TABLE `permohonan` (
   `permohonan_NIK` varchar(20) NOT NULL,
   `permohonan_no_hp` varchar(20) NOT NULL,
   `permohonan_jenis` varchar(100) NOT NULL,
-  `permohonan_status_peninjauan` enum('Ya','Tidak') NOT NULL DEFAULT 'Tidak',
   `permohonan_status` enum('Diterima','Dikembalikan') NOT NULL DEFAULT 'Diterima',
-  `permohonan_diteruskan` enum('Kabid','Kasi Usaha','Non Usaha','Aris','Rifki','Belum Diteruskan','Selesai') NOT NULL DEFAULT 'Kabid',
-  `permohonan_waktu` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `permohonan_masuk` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `permohonan_diteruskan` enum('Kabid','Operator','-','Selesai') NOT NULL DEFAULT 'Kabid',
+  `permohonan_selesai` datetime DEFAULT NULL,
+  `permohonan_masuk` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `permohonan_masuk_operator` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `permohonan`
 --
 
-INSERT INTO `permohonan` (`permohonan_id`, `permohonan_penerima`, `permohonan_pemohon`, `permohonan_alamat`, `permohonan_NIK`, `permohonan_no_hp`, `permohonan_jenis`, `permohonan_status_peninjauan`, `permohonan_status`, `permohonan_diteruskan`, `permohonan_waktu`, `permohonan_masuk`) VALUES
-(1, 'tes', 'ahmad muhammad zainal mustafa', 'asd', '1234123412341234', '123412341234', 'SIP', 'Ya', 'Diterima', 'Selesai', '2021-01-07 21:24:48', '2021-01-12 11:26:21'),
-(2, 'tes', 'Mudahri', 'curahtangi', '1234123412341234', '085204971183', 'SIP', 'Ya', 'Diterima', 'Selesai', '2021-01-07 00:52:29', '2021-01-12 11:26:21'),
-(4, 'CS', 'asdasdsd', 'asdasasd', '1234123412341234', '123412341234', 'gfhgh', 'Tidak', 'Diterima', 'Rifki', '2021-01-07 21:34:12', '2021-01-12 11:26:21'),
-(5, 'CS', 'asd221312', 'asddfdf', '1234123412341234', '123412341234', 'nnh', 'Ya', 'Diterima', 'Aris', '2021-01-07 22:13:22', '2021-01-12 11:26:21'),
-(11, 'CS', 'asdasd', 'dfgdfg', '1234123412341234', '123343243214', 'sdf', 'Ya', 'Diterima', 'Selesai', '2021-01-12 11:34:35', '2021-01-12 11:26:21'),
-(13, 'CS', 'dfgdfg', 'dfgdfg', '1234123423423411', '444444444444', 'sdaasd', 'Ya', 'Diterima', 'Belum Diteruskan', '2021-01-12 11:05:38', '2021-01-12 11:26:21'),
-(14, 'CS', 'jhjj', 'tyuyt', '7777777777777777', '777777777777', 'fh', 'Ya', 'Diterima', 'Kabid', '2021-01-12 11:18:08', '2021-01-12 11:26:21');
+INSERT INTO `permohonan` (`permohonan_id`, `permohonan_penerima`, `permohonan_pemohon`, `permohonan_alamat`, `permohonan_NIK`, `permohonan_no_hp`, `permohonan_jenis`, `permohonan_status`, `permohonan_diteruskan`, `permohonan_selesai`, `permohonan_masuk`, `permohonan_masuk_operator`) VALUES
+(1, 'tes', 'ahmad muhammad zainal mustafa', 'asd', '1234123412341234', '123412341234', 'SIP', 'Diterima', 'Selesai', '2021-01-07 21:24:48', '2021-01-12 11:26:21', '2021-01-18 19:32:41'),
+(2, 'tes', 'Mudahri', 'curahtangi', '1234123412341234', '085204971183', 'SIP', 'Diterima', 'Selesai', '2021-01-07 00:52:29', '2021-01-12 11:26:21', '2021-01-18 19:32:41'),
+(4, 'CS', 'asdasdsd', 'asdasasd', '1234123412341234', '123412341234', 'gfhgh', 'Diterima', 'Kabid', '2021-01-07 21:34:12', '2021-01-12 11:26:21', '2021-01-18 19:32:41'),
+(5, 'CS', 'asd221312', 'asddfdf', '1234123412341234', '123412341234', 'nnh', 'Diterima', 'Kabid', '2021-01-07 22:13:22', '2021-01-12 11:26:21', '2021-01-18 19:32:41'),
+(11, 'CS', 'asdasd', 'dfgdfg', '1234123412341234', '123343243214', 'sdf', 'Diterima', 'Selesai', '2021-01-12 11:34:35', '2021-01-12 11:26:21', '2021-01-18 19:32:41'),
+(13, 'CS', 'dfgdfg', 'dfgdfg', '1234123423423411', '444444444444', 'sdaasd', 'Diterima', 'Selesai', '2021-01-18 22:24:14', '2021-01-12 11:26:21', '2021-01-18 22:23:12'),
+(14, 'CS', 'jhjj', 'tyuyt', '7777777777777777', '777777777777', 'fh', 'Diterima', 'Operator', '2021-01-12 11:18:08', '2021-01-12 11:26:21', '2021-01-18 22:18:16'),
+(15, 'CS', 'amar', 'bondowoso', '1234123412341234', '081111111111', 'SIP', 'Diterima', 'Operator', '2021-01-15 09:18:58', '2021-01-15 09:18:58', '2021-01-18 19:32:41'),
+(16, 'CS', 'tess', 'tes', '1234123412341234', '123412341234', 'asdfgh', 'Dikembalikan', '-', NULL, '2021-01-18 19:54:33', NULL);
 
 -- --------------------------------------------------------
 
@@ -1003,7 +1002,7 @@ ALTER TABLE `transaksi`
 -- AUTO_INCREMENT untuk tabel `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `admin_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `admin_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT untuk tabel `bidang`
@@ -1051,7 +1050,7 @@ ALTER TABLE `pengunjung`
 -- AUTO_INCREMENT untuk tabel `permohonan`
 --
 ALTER TABLE `permohonan`
-  MODIFY `permohonan_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `permohonan_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT untuk tabel `pesanan`

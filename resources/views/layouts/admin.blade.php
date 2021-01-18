@@ -3,6 +3,12 @@
 <head>
     @include('templates.head')
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.css" rel="stylesheet">
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
+
     <link href="{{ url('/assets/plugins/datatables/dataTables.bootstrap4.css') }}" rel="stylesheet">
     <link href="{{ url('/assets/css/sb-admin.css') }}" rel="stylesheet">
     <script type="text/javascript" src="{{ url('/assets/js/Chart.js') }}"></script>
@@ -66,7 +72,7 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="pelanggan-dropdown">
                     <a class="dropdown-item" href="{{ url('/admin/datapermohonan') }}">Data Permohonan</a>
-                    @if(session('login')['level'] === 7)
+                    @if(session('login')['level'] === 3)
                     <a class="dropdown-item" href="{{ url('/admin/tambahpermohonan') }}">Tambah Permohonan</a>
                     @endif
                 </div>
@@ -87,12 +93,12 @@
                     <a class="dropdown-item" href="{{ url('/admin/produk') }}">Data Produk</a>
                 </div>
             </li> -->
-          <!--   <li class="nav-item">
-                <a class="nav-link" href="{{ url('/admin/pesanan') }}">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url('/admin/laporan') }}">
                     <i class="fas fa-shopping-cart"></i>
-                    <span>Data Penjualan</span>
+                    <span>Laporan</span>
                 </a>
-            </li> -->
+            </li>
             <!-- <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="admin-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" onclick="event.preventDefault(); alert('Belum'.toLocaleUpperCase());">
                     <i class="fa fa-table"></i>
@@ -169,6 +175,12 @@
     </div>
 
     @include('templates.script')
+    
+    
+    
+    
+
+
     <script src="{{ url('/assets/plugins/datatables/jquery.dataTables.js') }}"></script>
     <script src="{{ url('/assets/plugins/datatables/dataTables.bootstrap4.js') }}"></script>
     <script src="{{ url('/assets/js/sb-admin.min.js') }}"></script>

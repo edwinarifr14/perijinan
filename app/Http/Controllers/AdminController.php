@@ -17,28 +17,29 @@ use App\Models\Pelanggan;
 use App\Models\Transaksi;
 use App\Models\Pesanan;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class AdminController extends Controller
 {
       public function index() {
 
         $tahun = DB::table('permohonan')
-        ->select(DB::raw('YEAR(permohonan_waktu) as tahun'))
-        ->orderBy('permohonan_waktu','desc')
+        ->select(DB::raw('YEAR(permohonan_selesai) as tahun'))
+        ->orderBy('permohonan_selesai','desc')
         ->first();
 
         if($tahun){
             for ($i=1; $i < 13 ; $i++) {
                 $permohonan[] = DB::table('permohonan')
                 ->select('permohonan_id')
-                ->whereYear('permohonan_waktu', $tahun->tahun)
-                ->whereMonth('permohonan_waktu', $i)
+                ->whereYear('permohonan_masuk', $tahun->tahun)
+                ->whereMonth('permohonan_masuk', $i)
                 ->count();
               }
       
               $totalthn = DB::table('permohonan')
               ->select('permohonan_id')
-              ->whereYear('permohonan_waktu', $tahun->tahun)
+              ->whereYear('permohonan_masuk', $tahun->tahun)
               ->count();
 
               $tahunn=$tahun->tahun;
@@ -75,15 +76,13 @@ class AdminController extends Controller
     }
 
     public function listPermohonan(Request $req) {
-        $tes=Admin::find($req->session()->get('login')['id']); 
+        // $tes=Admin::find($req->session()->get('login')['id']); 
     //   $user = Pelanggan::find($req->session()->get('login')['id']);
       /* $province = Province::all();
       $city = City::select('name','id')->where('id_province',$user->pelanggan_province)->get(); */
-      if($tes->admin_level == 5 || $tes->admin_level == 6){
-        return view('admin.datapermohonan2');
-      }else{
+     
         return view('admin.datapermohonan');
-      }
+      
     }
 
     public function diteruskan(Request $request)
@@ -184,12 +183,6 @@ class AdminController extends Controller
 
     public function datatablesPermohonan() {
         return Datatables::of(Permohonan::all())
-            ->editColumn('permohonan_waktu', function ($user){
-                return date('d-m-Y H:i', strtotime($user->permohonan_waktu));
-            })
-            ->editColumn('permohonan_masuk', function ($user){
-                return date('d-m-Y H:i', strtotime($user->permohonan_waktu));
-            })
             ->addColumn('action', function($data) {
                 return '
                     <button
@@ -296,8 +289,8 @@ class AdminController extends Controller
             ->make();
     }
 
-    public function addPermohonan(Request $req) {/* 
-        $tes=Admin::find($req->session()->get('login')['id']); */
+    public function addPermohonan(Request $req) {
+        $tes=Admin::find($req->session()->get('login')['id']);
         $messages = [
           'alpha' => 'Hanya huruf pada kolom nama',
       'min' => 'Jumlah karakter tidak sesuai',
@@ -312,14 +305,13 @@ class AdminController extends Controller
              'kontak' => 'required|min:10|max:13'
           ],$messages);
 
-            $data1 = trim($req->pemohon);
+           /*  $data1 = trim($req->pemohon);
             $data2 = trim($req->alamat);
             $data3 = trim($req->nik);
             $data4 = trim($req->kontak);
-            $data5 = trim($req->jenis);
-            $data6 = trim($req->peninjauan);
+            $data5 = trim($req->jenis); */
 
-          /* try {
+          try {
               $admin = new Permohonan();
               $admin->permohonan_penerima = $tes->admin_nama;
               $admin->permohonan_pemohon = trim($req->pemohon);
@@ -327,11 +319,11 @@ class AdminController extends Controller
               $admin->permohonan_NIK = trim($req->nik);
               $admin->permohonan_no_hp = trim($req->kontak);
               $admin->permohonan_jenis = trim($req->jenis);
-              $admin->permohonan_status_peninjauan = trim($req->peninjauan);
               $admin->permohonan_status = trim($req->status);
-              $admin->permohonan_diteruskan = trim($req->diteruskan);
               if($req->status == 'Dikembalikan'){
-                  $admin->permohonan_proses = '-';
+                  $admin->permohonan_diteruskan = '-';
+              }else{
+                  $admin->permohonan_diteruskan = 'Kabid';
               }
               $admin->save();
               $req->session()->flash('msg', [
@@ -350,8 +342,8 @@ class AdminController extends Controller
                   'success' => false,
                   'msg' => "Permohonan gagal, {$ex->getMessage()}"
               ]);
-          } */
-          return view('admin.tambahpermohonan2',compact('data1', 'data2', 'data3','data4', 'data5', 'data6'));
+          }
+          return redirect('/admin/tambahpermohonan');
       }
 
       public function addPermohonan2(Request $req) {
@@ -424,6 +416,13 @@ class AdminController extends Controller
       
       public function permohonanupdate(Request $req, $id){
         $tes=Admin::find($req->session()->get('login')['id']); 
+        if($tes->admin_level == 2){
+            $level = 'Kabid';
+        }elseif($tes->admin_level == 4){
+            $level = 'Operator';
+        }else{
+            $level = 'Super';
+        }
         $tess= Permohonan::find($id);
         $date = Carbon::now('+07:00');
         $messages = [
@@ -432,129 +431,151 @@ class AdminController extends Controller
       'max' => 'Jumlah tidak sesuai',
       'required' => 'Tabel :attribute wajib diisi'
   ];
-        $this->validate($req,[
-             'pemohon' => 'required',
-             'alamat' => 'required',
-             'NIK' => 'required',
-             'jenis' => 'required',
-             'no_hp' => 'required'
-          ],$messages);
+        
           
-            try {
+          if($level == 'Super'){
+            $this->validate($req,[
+                'pemohon' => 'required',
+                'alamat' => 'required',
+                'NIK' => 'required',
+                'jenis' => 'required',
+                'no_hp' => 'required'
+             ],$messages);
+              try{
                 $admin = Permohonan::find($id);
-                
-                  $admin->permohonan_pemohon = trim($req->pemohon);
-                  $admin->permohonan_alamat = trim($req->alamat);
-                  $admin->permohonan_NIK = trim($req->NIK);
-                  $admin->permohonan_no_hp = trim($req->no_hp);
-                  $admin->permohonan_jenis = trim($req->jenis);
-                  $admin->save();
-
-                  if ($req->session()->get('login')['id'] === $admin->admin_id)
-                    $this->loginSession($req, $admin);
-                    $req->session()->flash('msg', [
-                    'success' => true,
-                    'msg' => 'Update data Permohonan berhasil!'
-                    ]);
-                    } catch (QueryException $ex) {
-                    if ((int) $ex->getCode() === 23000) {
+                $admin->permohonan_pemohon = trim($req->pemohon);
+                $admin->permohonan_alamat = trim($req->alamat);
+                $admin->permohonan_NIK = trim($req->NIK);
+                $admin->permohonan_no_hp = trim($req->no_hp);
+                $admin->permohonan_jenis = trim($req->jenis);
+                $admin->permohonan_status = trim($req->status);
+                if($req->status != $tess->permohonan_status){
+                    if($req->status == 'Dikembalikan' && $req->diteruskan != '-'){
+                        if ($req->session()->get('login')['id'] === $admin->admin_id)
+                        $this->loginSession($req, $admin);
                         $req->session()->flash('msg', [
                         'success' => false,
-                        'msg' => "Username '{$req->username}' sudah digunakan!"
-                    ]);
-                    } else throw new Exception($ex->getMessage());
-                    } catch (Exception $ex) {
-                     $req->session()->flash('msg', [
-                    'success' => false,
-                    'msg' => "Terjadi error.. Update datagagal, {$ex->getMessage()}"
-                     ]);
-                    }
-                  
-                  if($tes->admin_level == 1 || $tes->admin_level == 7){
-                      try{
-                        $admin = Permohonan::find($id);
-                        
-                            $admin->permohonan_status_peninjauan = trim($req->status_peninjauan);
-                            $admin->permohonan_status = trim($req->status);
-                            if($req->status=='Diterima'){
-                                $admin->permohonan_diteruskan = trim($req->diteruskan);
-                                $admin->save();
-                                
-                            } elseif($req->status == 'Dikembalikan'){
-                                $admin->permohonan_diteruskan = '-';
-                                $admin->save();
-                                
-                            }
-                            $admin->save();
-
-                            if ($req->session()->get('login')['id'] === $admin->admin_id)
-                              $this->loginSession($req, $admin);
-                              $req->session()->flash('msg', [
-                              'success' => true,
-                              'msg' => 'Update data Permohonan berhasil!'
-                              ]);
-                        }catch (QueryException $ex) {
-                            if ((int) $ex->getCode() === 23000) {
-                                $req->session()->flash('msg', [
-                                'success' => false,
-                                'msg' => "Username '{$req->username}' sudah digunakan!"
-                            ]);
-                            } else throw new Exception($ex->getMessage());
-                            } catch (Exception $ex) {
-                             $req->session()->flash('msg', [
-                            'success' => false,
-                            'msg' => "Terjadi error.. Update datagagal, {$ex->getMessage()}"
-                             ]);
-                            }
-                  }elseif($tes->admin_nama === $tess->permohonan_diteruskan){
-                      try{
-                        $admin = Permohonan::find($id);
-                        if($req->proses == 'Sedang Dalam Proses'){
-                            $admin->permohonan_diteruskan = $tess->permohonan_diteruskan;
-                            $admin->save();
-                            
-                          }else{
-                            $admin->permohonan_waktu = $date;
-                            $admin->permohonan_diteruskan = trim($req->proses);
-                            $admin->save();
-                            
-                          }
-                        $admin->save();
-
-                            if ($req->session()->get('login')['id'] === $admin->admin_id)
-                              $this->loginSession($req, $admin);
-                              $req->session()->flash('msg', [
-                              'success' => true,
-                              'msg' => 'Update data Permohonan berhasil!'
-                              ]);
-                            }catch (QueryException $ex) {
-                                if ((int) $ex->getCode() === 23000) {
-                                    $req->session()->flash('msg', [
-                                    'success' => false,
-                                    'msg' => "Username '{$req->username}' sudah digunakan!"
-                                ]);
-                                } else throw new Exception($ex->getMessage());
-                                } catch (Exception $ex) {
-                                $req->session()->flash('msg', [
-                                'success' => false,
-                                'msg' => "Terjadi error.. Update datagagal, {$ex->getMessage()}"
-                                ]);
-                                }
-                    
-                  }else{
-                      if($req->proses == 'Sedang Dalam Proses'){
-                        $admin->permohonan_diteruskan = $tess->permohonan_diteruskan;
-                        $admin->save();
-                        
-                      }else{
+                        'msg' => 'Update data gagal!'
+                        ]);
+                    }elseif($req->status == 'Diterima' && $req->diteruskan == '-'){
+                        if ($req->session()->get('login')['id'] === $admin->admin_id)
+                        $this->loginSession($req, $admin);
                         $req->session()->flash('msg', [
-                            'success' => false,
-                            'msg' => "Terjadi error.. Update data gagal"
-                             ]);
-                      }
-                    
-                  }
-   
+                        'success' => false,
+                        'msg' => 'Update data gagal!'
+                        ]);
+                    }else{
+                        $admin->permohonan_diteruskan = trim($req->diteruskan);
+                        $admin->save();
+                        if ($req->session()->get('login')['id'] === $admin->admin_id)
+                        $this->loginSession($req, $admin);
+                        $req->session()->flash('msg', [
+                        'success' => true,
+                        'msg' => 'Update data Permohonan berhasil!'
+                        ]);
+                    }
+                }else{
+                    $admin->save();
+                        if ($req->session()->get('login')['id'] === $admin->admin_id)
+                        $this->loginSession($req, $admin);
+                        $req->session()->flash('msg', [
+                        'success' => true,
+                        'msg' => 'Update data Permohonan berhasil!'
+                        ]);
+                    }
+                
+
+                
+                } catch (QueryException $ex) {
+                if ((int) $ex->getCode() === 23000) {
+                    $req->session()->flash('msg', [
+                    'success' => false,
+                    'msg' => "Username '{$req->username}' sudah digunakan!"
+                ]);
+                } else throw new Exception($ex->getMessage());
+                } catch (Exception $ex) {
+                 $req->session()->flash('msg', [
+                'success' => false,
+                'msg' => "Terjadi error.. Update datagagal, {$ex->getMessage()}"
+                 ]);
+                }
+          }elseif($level == 'Kabid'){
+             try{
+                $admin = Permohonan::find($id);
+                if($req->proses == 'Selesai'){
+                    if($tess->permohonan_diteruskan == 'Kabid'){
+                        $admin->permohonan_diteruskan = 'Operator';
+                        $admin->permohonan_masuk_operator = $date;
+                        $admin->save();
+                        if ($req->session()->get('login')['id'] === $admin->admin_id)
+                        $this->loginSession($req, $admin);
+                        $req->session()->flash('msg', [
+                        'success' => true,
+                        'msg' => 'Update data Permohonan berhasil!'
+                        ]);
+                    }else{
+                        if ($req->session()->get('login')['id'] === $admin->admin_id)
+                        $this->loginSession($req, $admin);
+                        $req->session()->flash('msg', [
+                        'success' => false,
+                        'msg' => 'Update data Permohonan gagal!'
+                        ]);
+                    }
+                }
+            } catch (QueryException $ex) {
+                if ((int) $ex->getCode() === 23000) {
+                    $req->session()->flash('msg', [
+                    'success' => false,
+                    'msg' => "Username '{$req->username}' sudah digunakan!"
+                ]);
+                } else throw new Exception($ex->getMessage());
+                } catch (Exception $ex) {
+                 $req->session()->flash('msg', [
+                'success' => false,
+                'msg' => "Terjadi error.. Update datagagal, {$ex->getMessage()}"
+                 ]);
+                } 
+          }else{
+              try{
+                $admin = Permohonan::find($id);
+                if($req->proses == 'Selesai'){
+                    if($tess->permohonan_diteruskan == 'Operator'){
+                        $admin->permohonan_diteruskan = 'Selesai';
+                        $admin->permohonan_selesai = $date;
+                        $admin->save();
+                        if ($req->session()->get('login')['id'] === $admin->admin_id)
+                        $this->loginSession($req, $admin);
+                        $req->session()->flash('msg', [
+                        'success' => true,
+                        'msg' => 'Update data Permohonan berhasil!'
+                        ]); 
+                    }else{
+                        if ($req->session()->get('login')['id'] === $admin->admin_id)
+                        $this->loginSession($req, $admin);
+                        $req->session()->flash('msg', [
+                        'success' => false,
+                        'msg' => 'Update data Permohonan gagal!'
+                        ]);
+                    }
+                }
+
+               } catch (QueryException $ex) {
+                if ((int) $ex->getCode() === 23000) {
+                    $req->session()->flash('msg', [
+                    'success' => false,
+                    'msg' => "Username '{$req->username}' sudah digunakan!"
+                ]);
+                } else throw new Exception($ex->getMessage());
+                } catch (Exception $ex) {
+                 $req->session()->flash('msg', [
+                'success' => false,
+                'msg' => "Terjadi error.. Update datagagal, {$ex->getMessage()}"
+                 ]);
+                } 
+          }
+
+
+            
             return redirect()->back();
 
       }
@@ -574,5 +595,39 @@ class AdminController extends Controller
         }
         return redirect()->back();
     }
+
+    public function laporan() {
+        return view('admin.laporan');
+    }
+
+    public function laporanPage(Request $req) {
+        /*$tes=Admin::find($req->session()->get('login')['id']); */
+        $messages = [
+      'required' => 'Tabel :attribute wajib diisi'
+  ];
+        $this->validate($req,[
+            'mulai' => 'required',
+            'akhir' => 'required'
+          ],$messages);
+
+          $mulai1 = date('d-m-Y H:i:s', strtotime($req->mulai." 00:00:00"));
+          $mulai = date('Y-m-d H:i:s', strtotime($mulai1));
+          $akhir1 = date('d-m-Y H:i:s', strtotime($req->akhir." 23:59:59"));
+          $akhir = date('Y-m-d H:i:s', strtotime($akhir1));
+
+          $data = Permohonan::whereBetween('permohonan_masuk',[$mulai, $akhir])->get();
+            
+          return view('admin.laporanPage',compact('data', 'mulai', 'akhir'));
+      }
+
+      public function laporan_cetak(Request $req) {
+      
+        $data = Permohonan::whereBetween('permohonan_masuk',[$req->mulai, $req->akhir])->get();
+            
+        $pdf = PDF::loadview('admin.laporanCetak',['data'=>$data]);
+    	return $pdf->stream();
+      }
+
+
 
 }

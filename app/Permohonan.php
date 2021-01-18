@@ -21,11 +21,11 @@ class Permohonan extends Model
             'permohonan_NIK',
             'permohonan_no_hp',
             'permohonan_jenis',
-            'permohonan_status_peninjauan',
             'permohonan_status',
             'permohonan_diteruskan',
-            'permohonan_waktu',
-            'permohonan_masuk'
+            'permohonan_selesai',
+            'permohonan_masuk',
+            'permohonan_masuk_operator'
         ]);
     }
     

@@ -24,10 +24,10 @@
                     <tr>
                         <th>No</th>
                         <th>Pemohon</th>
-                        <th>NIK</th>
                         <th>Jenis</th>
-                        <th>Waktu Masuk</th>
-                        <th>Waktu Selesai</th>
+                        <th>Masuk</th>
+                        <th>Operator</th>
+                        <th>Selesai</th>
                         <th>Keterangan</th>
                         <th>Proses</th>
                         <th>Aksi</th>
@@ -61,52 +61,54 @@
                     <p class="text-danger">{{ $errors->first('penerima') }}</p>
                     <div class="form-group">
                         <label for="nama" class="col-form-label">Pemohon:</label>
+                        @if(session('login')['level'] === 1||session('login')['level'] === 3)
                         <input type="text" class="form-control" id="pemohon" name="pemohon">
+                        @else
+                        <input disabled type="text" class="form-control" id="pemohon" name="pemohon">
+                        @endif
                     </div>
                     <p class="text-danger">{{ $errors->first('pemohon') }}</p>
                     <div class="form-group">
                         <label for="nama" class="col-form-label">Alamat:</label>
+                        @if(session('login')['level'] === 1||session('login')['level'] === 3)
                         <input type="text" class="form-control" id="alamat" name="alamat">
+                        @else
+                        <input disabled type="text" class="form-control" id="alamat" name="alamat">
+                        @endif
                     </div>
                     <p class="text-danger">{{ $errors->first('alamat') }}</p>
                     <div class="form-group">
                         <label for="kontak" class="col-form-label">NIK:</label>
+                        @if(session('login')['level'] === 1||session('login')['level'] === 3)
                         <input type="number" class="form-control" id="NIK" name="NIK">
+                        @else
+                        <input disabled type="number" class="form-control" id="NIK" name="NIK">
+                        @endif
                     </div>
                     <p class="text-danger">{{ $errors->first('nik') }}</p>
                     <div class="form-group">
                         <label for="kontak" class="col-form-label">Kontak:</label>
+                        @if(session('login')['level'] === 1||session('login')['level'] === 3)
                         <input type="number" class="form-control" id="no_hp" name="no_hp">
+                        @else
+                        <input disabled type="number" class="form-control" id="no_hp" name="no_hp">
+                        @endif
                     </div>
                     <p class="text-danger">{{ $errors->first('no_hp') }}</p>
                     <div class="form-group">
                         <label for="nama" class="col-form-label">Jenis Permohonan:</label>
+                        @if(session('login')['level'] === 1||session('login')['level'] === 3)
                         <input type="text" class="form-control" id="jenis" name="jenis">
+                        @else
+                        <input disabled type="text" class="form-control" id="jenis" name="jenis">
+                        @endif
                     </div>
                     <p class="text-danger">{{ $errors->first('jenis') }}</p>
-                    <div class="form-group">
-                        <label for="alamat" class="col-form-label">Peninjauan Lapangan:</label>
-                          <div class="col-md-14 form-inline">
-                          @if(session('login')['level'] === 1 ||session('login')['level'] === 7)
-                          <select class="form-control col-md-12" name="status_peninjauan" id="status_peninjauan">
-                          @else
-                          <select disabled class="form-control col-md-12" name="status_peninjauan" id="status_peninjauan">
-                          @endif
-                          <option value="Ya">Ya</option>
-                                <option value="Tidak">Tidak</option>
-                          </select>
-                          <!-- </div>
-                          <div class="col-md-12 form-group"> -->
-                          </div>
-                          
-                          </div>
-                          <div class="form-group">
-                    </div>
                     <p class="text-danger">{{ $errors->first('peninjauan') }}</p>
                     <div class="form-group">
                         <label for="alamat" class="col-form-label">Status:</label>
                           <div class="col-md-14 form-inline">
-                          @if(session('login')['level'] === 1 ||session('login')['level'] === 7)
+                          @if(session('login')['level'] === 1 ||session('login')['level'] === 3)
                           <select class="form-control col-md-12" name="status" id="status">
                           @else
                           <select disabled class="form-control col-md-12" name="status" id="status">
@@ -125,27 +127,17 @@
                     <div class="form-group">
                         <label for="alamat" class="col-form-label">Diteruskan:</label>
                           <div class="col-md-14 form-inline">
-                          @if(session('login')['level'] === 1 ||session('login')['level'] === 7)
+                          @if(session('login')['level'] === 1)
                           <select class="form-control col-md-12" name="diteruskan" id="diteruskan">
-                          <option value="-">-</option>
-                          <option value="Kabid">Kabid</option>
-                            <option value="Kasi Usaha">Kasi Usaha</option>
-                            <option value="Non Usaha">Non Usaha</option>
-                            <option value="Aris">Aris</option>
-                            <option value="Rifki">Rifki</option>
-                            <option value="Selesai">Selesai</option>
-                          </select>
                           @else
                           <select disabled class="form-control col-md-12" name="diteruskan" id="diteruskan">
+                          @endif
                           <option value="-">-</option>
                           <option value="Kabid">Kabid</option>
-                            <option value="Kasi Usaha">Kasi Usaha</option>
-                            <option value="Non Usaha">Non Usaha</option>
-                            <option value="Aris">Aris</option>
-                            <option value="Rifki">Rifki</option>
+                            <option value="Operator">Operator</option>
                             <option value="Selesai">Selesai</option>
                           </select>
-                          @endif
+                          
                           <!-- </div>
                           <div class="col-md-12 form-group"> -->
                           </div>
@@ -157,14 +149,13 @@
                     <div class="form-group">
                         <label for="alamat" class="col-form-label">Proses:</label>
                           <div class="col-md-14 form-inline">
-                          @if(session('login')['level'] === 1 ||session('login')['level'] === 7)
+                          @if(session('login')['level'] === 1 ||session('login')['level'] === 3)
                           <select disabled class="form-control col-md-12" name="proses" id="proses">
                           @else
                           <select class="form-control col-md-12" name="proses" id="proses">
                           @endif
                           <option value="Sedang Dalam Proses">Sedang Dalam Proses</option>
-                                <option value="Aris">Aris</option>
-                                <option value="Rifki">Rifki</option>
+                                <option value="Selesai">Selesai</option>
                           </select>
                           
                           <!-- </div>
@@ -175,12 +166,16 @@
                           <div class="form-group">
                     </div>
                     <div class="form-group">
-                        <label for="nama" class="col-form-label">Waktu Masuk:</label>
+                        <label for="nama" class="col-form-label">Masuk:</label>
                         <input disabled type="text" class="form-control" id="masuk" name="masuk">
                     </div>
                     <div class="form-group">
-                        <label for="nama" class="col-form-label">Waktu Selesai:</label>
-                        <input disabled type="text" class="form-control" id="waktu" name="waktu">
+                        <label for="nama" class="col-form-label">Masuk Operator:</label>
+                        <input disabled type="text" class="form-control" id="masuk_operator" name="masuk_operatr">
+                    </div>
+                    <div class="form-group">
+                        <label for="nama" class="col-form-label">Selesai:</label>
+                        <input disabled type="text" class="form-control" id="selesai" name="selesai">
                     </div>
                     
                 
@@ -220,15 +215,20 @@ function openAction(res) {
 $(document).ready(function() {
     var table = $('#data-pelanggan').DataTable({
         processing: true,
+        "defaultContent": "-",
+        "targets": "_all",
         serverSide: true,
         ajax: "{{ url('/admin/permohonan/data') }}",
         columns: [
-            { 'data': 'permohonan_id' },
+            { "data": null,"sortable": false, 
+                render: function (data, type, row, meta) {
+                return meta.row + meta.settings._iDisplayStart + 1;
+                }   },
             { 'data': 'permohonan_pemohon' },
-            { 'data': 'permohonan_NIK' },
             { 'data': 'permohonan_jenis' },
             { 'data': 'permohonan_masuk' },
-            { 'data': 'permohonan_waktu' },
+            { 'data': 'permohonan_masuk_operator'},
+            { 'data': 'permohonan_selesai' },
             { 'data': 'permohonan_status' },
             { 'data': 'permohonan_diteruskan' },
             { 'data': 'action' },

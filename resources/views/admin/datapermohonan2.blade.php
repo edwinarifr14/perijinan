@@ -220,7 +220,10 @@ $(document).ready(function() {
         serverSide: true,
         ajax: "{{ url('/admin/permohonan/data') }}",
         columns: [
-            { 'data': 'permohonan_id' },
+            { "data": null,"sortable": false, 
+                render: function (data, type, row, meta) {
+                return meta.row + meta.settings._iDisplayStart + 1;
+                } },
             { 'data': 'permohonan_pemohon' },
             { 'data': 'permohonan_NIK' },
             { 'data': 'permohonan_jenis' },
