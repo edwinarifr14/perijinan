@@ -624,7 +624,7 @@ class AdminController extends Controller
       
         $data = Permohonan::whereBetween('permohonan_masuk',[$req->mulai, $req->akhir])->get();
             
-        $pdf = PDF::loadview('admin.laporanCetak',['data'=>$data]);
+        $pdf = PDF::loadview('admin.laporanCetak',['data'=>$data, 'mulai'=>$req->mulai, 'akhir'=>$req->akhir]);
     	return $pdf->stream();
       }
 
