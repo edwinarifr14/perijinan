@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 19 Jan 2021 pada 15.36
+-- Waktu pembuatan: 22 Jun 2021 pada 08.34
 -- Versi server: 10.1.38-MariaDB
 -- Versi PHP: 7.3.2
 
@@ -759,7 +759,6 @@ INSERT INTO `permohonan` (`permohonan_id`, `permohonan_penerima`, `permohonan_pe
 (14, 'CS', 'jhjj', 'tyuyt', '7777777777777777', '777777777777', 'fh', 'Diterima', 'Operator', '2021-01-12 11:18:08', '2021-01-12 11:26:21', '2021-01-18 22:18:16'),
 (15, 'CS', 'amar', 'bondowoso', '1234123412341234', '081111111111', 'SIP', 'Diterima', 'Operator', '2021-01-15 09:18:58', '2021-01-15 09:18:58', '2021-01-18 19:32:41'),
 (16, 'CS', 'tess', 'tes', '1234123412341234', '123412341234', 'asdfgh', 'Dikembalikan', '-', NULL, '2021-01-18 19:54:33', NULL),
-(17, 'CS', 'testing', 'testing', '1234123412341234', '123412341234', 'testing', 'Diterima', 'Selesai', '2021-01-19 15:26:32', '2021-01-19 15:23:22', '2021-01-19 15:25:40'),
 (18, 'CS', 'testing2', 'testing2', '1234123412341234', '123412341234', 'testing2', 'Diterima', 'Operator', NULL, '2021-01-19 15:39:45', '2021-01-19 15:40:44');
 
 -- --------------------------------------------------------

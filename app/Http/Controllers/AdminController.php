@@ -36,14 +36,14 @@ class AdminController extends Controller
                 ->whereMonth('permohonan_masuk', $i)
                 ->count();
               }
-      
+
               $totalthn = DB::table('permohonan')
               ->select('permohonan_id')
               ->whereYear('permohonan_masuk', $tahun->tahun)
               ->count();
 
               $tahunn=$tahun->tahun;
-      
+
         }else{
             for ($i=1; $i < 13 ; $i++) {
                 $permohonan[] = 0;
@@ -52,7 +52,7 @@ class AdminController extends Controller
               $totalthn = 0;
         }
 
-        
+
         $total = DB::table('permohonan')
         ->select('permohonan_id')
         ->count();
@@ -76,13 +76,13 @@ class AdminController extends Controller
     }
 
     public function listPermohonan(Request $req) {
-        // $tes=Admin::find($req->session()->get('login')['id']); 
+        // $tes=Admin::find($req->session()->get('login')['id']);
     //   $user = Pelanggan::find($req->session()->get('login')['id']);
       /* $province = Province::all();
       $city = City::select('name','id')->where('id_province',$user->pelanggan_province)->get(); */
-     
+
         return view('admin.datapermohonan');
-      
+
     }
 
     public function diteruskan(Request $request)
@@ -352,12 +352,12 @@ class AdminController extends Controller
         'alpha' => 'Tabel :attribute wajib diisi'
     ];
 
-        
+
             $this->validate($req,[
                 'diteruskan1' => 'alpha',
                 ],$messages); */
-        
-          
+
+
 
             /* $data1 = trim($req->pemohon);
             $data2 = trim($req->alamat);
@@ -392,7 +392,7 @@ class AdminController extends Controller
                     $admin->permohonan_diteruskan = 'Aris';
                 } */
               }
-              
+
               $admin->save();
               $req->session()->flash('msg', [
                   'success' => true,
@@ -413,9 +413,9 @@ class AdminController extends Controller
           }
           return redirect('/admin/tambahpermohonan');
       }
-      
+
       public function permohonanupdate(Request $req, $id){
-        $tes=Admin::find($req->session()->get('login')['id']); 
+        $tes=Admin::find($req->session()->get('login')['id']);
         if($tes->admin_level == 2){
             $level = 'Kabid';
         }elseif($tes->admin_level == 4){
@@ -431,8 +431,8 @@ class AdminController extends Controller
       'max' => 'Jumlah tidak sesuai',
       'required' => 'Tabel :attribute wajib diisi'
   ];
-        
-          
+
+
           if($level == 'Super'){
             $this->validate($req,[
                 'pemohon' => 'required',
@@ -483,9 +483,9 @@ class AdminController extends Controller
                         'msg' => 'Update data Permohonan berhasil!'
                         ]);
                     }
-                
 
-                
+
+
                 } catch (QueryException $ex) {
                 if ((int) $ex->getCode() === 23000) {
                     $req->session()->flash('msg', [
@@ -534,7 +534,7 @@ class AdminController extends Controller
                 'success' => false,
                 'msg' => "Terjadi error.. Update datagagal, {$ex->getMessage()}"
                  ]);
-                } 
+                }
           }else{
               try{
                 $admin = Permohonan::find($id);
@@ -548,7 +548,7 @@ class AdminController extends Controller
                         $req->session()->flash('msg', [
                         'success' => true,
                         'msg' => 'Update data Permohonan berhasil!'
-                        ]); 
+                        ]);
                     }else{
                         if ($req->session()->get('login')['id'] === $admin->admin_id)
                         $this->loginSession($req, $admin);
@@ -571,11 +571,11 @@ class AdminController extends Controller
                 'success' => false,
                 'msg' => "Terjadi error.. Update datagagal, {$ex->getMessage()}"
                  ]);
-                } 
+                }
           }
 
 
-            
+
             return redirect()->back();
 
       }
@@ -616,15 +616,15 @@ class AdminController extends Controller
           $akhir = date('Y-m-d H:i:s', strtotime($akhir1));
 
           $data = Permohonan::whereBetween('permohonan_masuk',[$mulai, $akhir])->get();
-            
+
           return view('admin.laporanPage',compact('data', 'mulai', 'akhir'));
       }
 
       public function laporan_cetak(Request $req) {
-      
+
         $data = Permohonan::whereBetween('permohonan_masuk',[$req->mulai, $req->akhir])->get();
-            
-        $pdf = PDF::loadview('admin.laporanCetak',['data'=>$data, 'mulai'=>$req->mulai, 'akhir'=>$req->akhir]);
+
+        $pdf = PDF::loadview('admin.laporanCetak',['data'=>$data, 'mulai'=>$req->mulai, 'akhir'=>$req->akhir])->setPaper('a4', 'landscape');
     	return $pdf->stream();
       }
 
