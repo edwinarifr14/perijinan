@@ -15,7 +15,7 @@
 		<br/>
         <form action="{{ url('/admin/laporan/laporan_cetak') }}" method="POST">
             @csrf
-            
+
             <input hidden value="{{$mulai}}" class="form-control" type="text" id="mulai" name="mulai"/>
 			<input hidden value="{{$akhir}}" class="form-control" type="text" id="mulai" name="akhir"/>
 
@@ -24,8 +24,8 @@
                     <i class="fas fa-angle-double-right"></i>
                     <span>Cetak</span>
                 </button>
-				
-            
+
+
         </form>
 
 		<!-- <a href="/admin/laporan/laporan_cetak" class="btn btn-primary" target="_blank">CETAK PDF</a> -->
@@ -41,8 +41,8 @@
 					<th>Operator</th>
 					<th>Selesai</th>
 					<th>Lama</th>
-					
-					
+
+
 				</tr>
 			</thead>
 			<tbody>
@@ -67,7 +67,7 @@
 					<td></td>
 					@endif
 
-					@if($d->permohonan_selesai)
+					@if($d->permohonan_diteruskan == "Selesai")
 						@if(\Carbon\Carbon::parse( $d->permohonan_masuk )->diffInDays( $d->permohonan_selesai) === 0)
 						<td>1 hari</td>
 						@else

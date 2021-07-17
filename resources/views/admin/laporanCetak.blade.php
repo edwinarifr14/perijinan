@@ -52,7 +52,7 @@
 				<td></td>
 				@endif
 
-				@if($d->permohonan_selesai)
+				@if($d->permohonan_diteruskan == "Selesai")
 					@if(\Carbon\Carbon::parse( $d->permohonan_masuk )->diffInDays( $d->permohonan_selesai) === 0)
 					<td>1 hari</td>
 					@else
